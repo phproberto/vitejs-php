@@ -3,10 +3,10 @@
 namespace Phproberto\Vite\Tests;
 
 use Phproberto\Vite\Vite;
+use Phproberto\Vite\Tests\BaseTestCase;
 use Phproberto\Vite\ViteEntryConfiguration;
-use PHPUnit\Framework\TestCase;
 
-class ViteTest extends TestCase
+class ViteTest extends BaseTestCase
 {
     /**
      * @var Vite

@@ -5,7 +5,7 @@ namespace Phproberto\Vite;
 use Phproberto\Vite\ViteEntryConfiguration;
 use Phproberto\Vite\ManifestNotFoundException;
 
-final class ViteEntry {
+class ViteEntry {
     /**
      * @var array
      */
@@ -28,10 +28,10 @@ final class ViteEntry {
      */
     protected $tag = null;
 
-    public function __construct(string $path, ViteEntryConfiguration $config, string $tag = null)
+    public function __construct(string $path, ViteEntryConfiguration $config = null, string $tag = null)
     {
         $this->path = $path;
-        $this->config = $config;
+        $this->config = $config ?: new ViteEntryConfiguration();
         $this->tag = $tag;
     }
 
@@ -225,6 +225,11 @@ final class ViteEntry {
             return static::$checked[$manifest];
         }
 
+        return static::$checked[$manifest] = $this->checkIfActiveViteServer();
+    }
+
+    protected function checkIfActiveViteServer(): bool
+    {
         $url = $this->config->getInternalViteHost() . '/' . $this->path;
 
         $handle = curl_init($url);
@@ -234,8 +239,6 @@ final class ViteEntry {
         curl_exec($handle);
         $error = curl_errno($handle);
         curl_close($handle);
-
-        static::$checked[$manifest] = !$error;
 
         return !$error;
     }
